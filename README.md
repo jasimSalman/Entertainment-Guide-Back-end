@@ -1,16 +1,20 @@
-# Project Title
+# Entertainment Guid
 
 ## Date: 10/6/2024
 
 ### By: Jasim Salman | Mohammed Saeed | Zainab Al-Talaq
 
-#### | [GitHub](https://github.com/NobodysLackey) | [LinkedIn](https://www.linkedin.com/in/michaelglackey/)
+#### [GitHub](https://github.com/jasimSalman) | [LinkedIn](https://www.linkedin.com/in/jasimsalman1/)
+
+#### [GitHub](https://github.com/m00hammed) | [LinkedIn](https://www.linkedin.com/in/<username>/)
+
+#### [GitHub](https://github.com/zainabaltalaq) | [LinkedIn](https://www.linkedin.com/in/<username>/)
 
 ---
 
 ### **_Description_**
 
-#### A brief description of the project, what it's about, when and what you made it for, etc. ...
+#### "Entertainment Guide" is your ultimate resource for discovering entertainment venues in Bahrain. Our website offers a wide range of categories, from swimming pools to parks and beyond, allowing users to easily explore various options. Each listing includes detailed information about the venue, and for those venues that offer reservations, users can conveniently book their visit directly through our platform.
 
 ---
 
@@ -27,7 +31,7 @@
 
 ##### Sign up and sign in as a new user and then begin viewing the different sections of the website.
 
-##### A Trello board was used to keep track of development progress and can be viewed [here](URL).
+##### A Trello board was used to keep track of development progress and can be viewed [here](https://trello.com/b/cavvFYqQ/project-3).
 
 ##### The project was deployed and can be viewed [here](URL).
 
@@ -37,29 +41,27 @@
 
 ##### Wireframe
 
-![Main page](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.PDlm3trgAkY6pGPcbRt4SQHaEK%26pid%3DApi&f=1)
+![Home page](images/Home.png)
+![P;lace details page](images/Page_details.png)
+![Sign up page](images/signup.png)
 
-##### image header 2
+##### ER Diagram
 
-![Scared](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.buntINTHFLyDODyMKXNYcgHaEK%26pid%3DApi&f=1)
+![ER](images/ERD.png)
 
 ---
 
 ### **_Future Updates_**
 
-- [ ] Future Update 1
-- [ ] Future Update 2
-- [x] Completed Update
-- [x] ~~Strikethrough~~ Items Also
+- [ ] Add more categories and features.
+- [ ] Add a map showing the locations of the places.
 
 ---
 
 ### **_Credits_**
 
-##### Funny Images: [DuckDuckGo Search](http://www.duckduckgo.com)
+##### github: [github](https://github.com/SEI-09-Bahrain/class_wiki?tab=readme-ov-file)
 
-##### Markdown Guide: [ia.net](https://ia.net/writer/support/general/markdown-guide)
-
-##### Markdown Cheatsheet: [GitHub](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
+##### w3school: [w3school](https://www.w3schools.com/)
 
 ---
