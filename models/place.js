@@ -1,5 +1,6 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
 const Placeschema = new Schema(
   {
     placeName: String,
@@ -8,12 +9,12 @@ const Placeschema = new Schema(
     placeDescription: String,
     placeType: String,
     placeLocation: String,
-    user: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    review: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    review: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 
-module.exports = mongoose.model("Place", Placeschema)
+module.exports = mongoose.model('Place', Placeschema)
