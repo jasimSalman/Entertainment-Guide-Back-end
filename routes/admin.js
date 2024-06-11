@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 //Admin or owner not sure yet
-const adminsCtrl = require('../controllers/admins')
+// const adminsCtrl = require('../controllers/admins')
 
 // router.get('/', adminsCtrl.index)
 // router.post('/new', adminsCtrl.create)
