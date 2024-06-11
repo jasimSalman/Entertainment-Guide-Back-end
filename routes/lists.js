@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const listsCtrl = require('../controlleres/lists')
+const listsCtrl = require('../controllers/lists')
 
 router.get('/:palceId', listsCtrl.add)
 
