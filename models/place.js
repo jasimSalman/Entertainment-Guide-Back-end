@@ -9,7 +9,8 @@ const Placeschema = new Schema(
     placeDescription: String,
     placeType: String,
     placeLocation: String,
-    user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    placeDates: [String],
+    placeTimes: [String],
     review: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
   },
   {

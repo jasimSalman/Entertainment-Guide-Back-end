@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const UserSchema = new Schema(
   {
@@ -8,12 +8,12 @@ const UserSchema = new Schema(
     userPasswordDigest: String,
     userEmail: String,
     userType: String,
-    userList: [String],
-    booking: { type: Schema.Types.ObjectId, ref: "Booking" },
+    userList: [{ type: Schema.Types.ObjectId, ref: 'Place' }],
+    booking: { type: Schema.Types.ObjectId, ref: 'Booking' }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 
-module.exports = mongoose.model("User", UserSchema)
+module.exports = mongoose.model('User', UserSchema)

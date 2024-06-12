@@ -5,10 +5,10 @@ const placesCtrl = require('../controllers/places')
 
 router.get('/', placesCtrl.index)
 
-// router.get('/:placeId/reviews', placesCtrl.review)
+router.get('/:placeId/reviews', placesCtrl.showReview)
 
 router.get('/:placeId', placesCtrl.show)
 
-// router.post('/:placeId/reviews/:userId', placesCtrl.addReview)
+router.post('/:placeId/reviews/:userId', placesCtrl.addReview)
 
 module.exports = router
