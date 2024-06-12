@@ -1,5 +1,6 @@
 const Place = require('../models/place')
 const Category = require('../models/category')
+const Review = require('../models/review')
 
 const index = async (req, res) => {
   // const paramId = req.params.id
@@ -19,7 +20,18 @@ const show = async (req, res) => {
   res.send(places)
 }
 
+const showReview = async (req, res) => {
+  const placeId = req.params.placeId
+  const places = await Place.findById(placeId)
+
+  const reviews = places.review
+  const review = await Review.findById(reviews)
+
+  res.send(review)
+}
+
 module.exports = {
   index,
-  show
+  show,
+  showReview
 }
