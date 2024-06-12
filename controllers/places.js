@@ -1,5 +1,5 @@
-const Place = require('../models/place')
-const Category = require('../models/category')
+const Place = require("../models/place")
+const Category = require("../models/category")
 const Review = require('../models/review')
 // const place = require('../models/place')
 

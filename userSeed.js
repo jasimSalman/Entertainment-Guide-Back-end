@@ -4,18 +4,15 @@ const Place = require("./models/user")
 const Booking = require("./models/booking")
 const createCategories = async () => {
   try {
-    // const booking = await Booking.create({
-    //   places: [""],
-    // })
     const places = await Place.create({
-      userFirstName: "jasim",
-      userLastName: "mahemd",
-      userName: "jassim",
+      userFirstName: "mohaammed",
+      userLastName: "mirza",
+      userName: "zainab",
       userPasswordDigest: "1234",
-      userEmail: "jasim@gmail.com",
+      userEmail: "zainab@gmail.com",
       userType: "user",
       booking: [],
-      userList: [],
+      userList: ["666986d29ec4234646f4e9ad"],
     })
   } catch (err) {
     console.error(err)
