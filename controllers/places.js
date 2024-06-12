@@ -1,5 +1,5 @@
-const Place = require('../models/place')
-const Category = require('../models/category')
+const Place = require("../models/place")
+const Category = require("../models/category")
 
 const index = async (req, res) => {
   // const paramId = req.params.id
@@ -21,5 +21,5 @@ const show = async (req, res) => {
 
 module.exports = {
   index,
-  show
+  show,
 }
