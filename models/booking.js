@@ -2,9 +2,10 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const bookingSchema = new Schema(
   {
-    places: [{ type: Schema.Types.ObjectId, ref: "Place" }],
-    date: String,
-    time: String,
+    place: { type: Schema.Types.ObjectId, ref: "Place", required: true },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   {
     timestamps: true,
