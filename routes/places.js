@@ -11,4 +11,6 @@ router.get('/:placeId', placesCtrl.show)
 
 router.post('/:placeId/reviews/:userId', placesCtrl.addReview)
 
+router.delete('/:placeId/reviews/:reviewId', placesCtrl.deleteReview)
+
 module.exports = router
