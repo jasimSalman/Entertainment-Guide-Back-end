@@ -18,6 +18,20 @@ const create = async (req, res) => {
   // http://localhost:3001/book/:placeId/create
 }
 
+const index = async (req, res) => {
+  try {
+    // userId=req.params.userId
+    userId = "6669861eefdcb09ab5eb3e27"
+    const user = await User.findById(userId).populate("booking")
+    const booking = user.booking
+    res.send(booking)
+  } catch (err) {
+    console.log(err)
+  }
+  //http://localhost:3001/book/6669861eefdcb09ab5eb3e27
+}
+
 module.exports = {
   create,
+  index,
 }
