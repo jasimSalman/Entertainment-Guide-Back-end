@@ -1,7 +1,7 @@
-const Place = require("../models/place")
-const Category = require("../models/category")
+const Place = require('../models/place')
+const Category = require('../models/category')
 const Review = require('../models/review')
-// const place = require('../models/place')
+const User = require('../models/user')
 
 //This function will return all the places of a certain category.
 const index = async (req, res) => {
@@ -71,10 +71,33 @@ const deleteReview = async (req, res) => {
   res.status(201).send(deleted)
 }
 
+//This function adds a review for a particular place.
+const addPlace = async (req, res) => {
+  const reqBody = req.body
+  const userId = '666aa6d350469c291aad9e00'
+  // console.log(`Request body == > ${JSON.stringify(reqBody)}`)
+  // console.log(`User ID == > ${JSON.stringify(userId)}`)
+
+  try {
+    const place = new Place(reqBody)
+    const createdPlace = await place.save()
+    // console.log(createdPlace._id)
+    const user = await User.findById(userId)
+    // console.log(`the creaetd user => ${user}`)
+    user.place.push(createdPlace._id)
+    await user.save()
+
+    res.status(201).send(createdPlace)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 module.exports = {
   index,
   show,
   showReview,
   addReview,
-  deleteReview
+  deleteReview,
+  addPlace
 }
