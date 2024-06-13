@@ -93,11 +93,65 @@ const addPlace = async (req, res) => {
   }
 }
 
+const updatePlace = async (req, res) => {
+  try {
+    const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, {
+      new: true,
+      runValidators: true
+    })
+
+    if (!place) {
+      return res.status(404).send({ error: 'Place not found' })
+    }
+    res.status(200).send(place)
+  } catch (e) {
+    console.error(e)
+    res.status(500).send({ error: 'Internal Server Error' })
+  }
+}
+
+const deletePlace = async (req, res) => {
+  const placeId = req.params.placeId
+  console.log(`The place ID ==> ${placeId}`)
+
+  const userId = '666aa6d350469c291aad9e00'
+
+  try {
+    const place = await Place.findById(placeId)
+    if (!place) {
+      return res.status(404).send({ error: 'Place not found' })
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).send({ error: 'User not found' })
+    }
+
+    const placeIndex = user.place.indexOf(placeId)
+    if (placeIndex > -1) {
+      user.place.splice(placeIndex, 1)
+    } else {
+      return res.status(404).send({ error: 'Place not found in user places' })
+    }
+
+    await user.save()
+
+    await Place.findByIdAndDelete(placeId)
+
+    res.status(200).send({ message: 'Place deleted successfully' })
+  } catch (e) {
+    console.error(e)
+    res.status(500).send({ error: 'Internal Server Error' })
+  }
+}
+
 module.exports = {
   index,
   show,
   showReview,
   addReview,
   deleteReview,
-  addPlace
+  addPlace,
+  updatePlace,
+  deletePlace
 }
