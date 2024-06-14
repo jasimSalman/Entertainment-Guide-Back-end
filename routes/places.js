@@ -6,7 +6,7 @@ const placesCtrl = require("../controllers/places")
 router.get("/:placeId/reviews", placesCtrl.showReview)
 
 router.post(
-  "/new",
+  '/new/:userId',
   middleware.stripToken,
   middleware.verifyToekn,
   placesCtrl.addPlace
@@ -39,7 +39,7 @@ router.put(
 ) //update place
 
 router.delete(
-  "/:placeId",
+  '/:placeId/:userId',
   middleware.stripToken,
   middleware.verifyToekn,
   placesCtrl.deletePlace
