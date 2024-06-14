@@ -17,9 +17,9 @@ const index = async (req, res) => {
 //This function will show the details of a particular place.
 const show = async (req, res) => {
   const placeId = req.params.placeId
-  console.log(placeId)
+  // console.log(placeId)
   const places = await Place.findById(placeId)
-  console.log(places)
+  // console.log(places)
   res.send(places)
 }
 
@@ -38,13 +38,13 @@ const showReview = async (req, res) => {
 const addReview = async (req, res) => {
   const reqBody = req.body
   const placeId = req.params.placeId
-  console.log(`Request body == > ${JSON.stringify(reqBody)}`)
-  console.log(`Place ID == > ${JSON.stringify(placeId)}`)
+  // console.log(`Request body == > ${JSON.stringify(reqBody)}`)
+  // console.log(`Place ID == > ${JSON.stringify(placeId)}`)
 
   try {
     const review = new Review(reqBody)
     const createdRe = await review.save()
-    console.log(createdRe._id)
+    // console.log(createdRe._id)
 
     const place = await Place.findById(placeId)
     place.review.push(createdRe._id)
@@ -58,7 +58,7 @@ const addReview = async (req, res) => {
 //This function is responsible for deleting a review from a particular place.
 const deleteReview = async (req, res) => {
   const reviewId = req.params.reviewId
-  console.log(`Review ID ==>${reviewId}`)
+  // console.log(`Review ID ==>${reviewId}`)
 
   const review = await Review.findById(reviewId)
 
@@ -71,28 +71,54 @@ const deleteReview = async (req, res) => {
   res.status(201).send(deleted)
 }
 
-//This function adds a review for a particular place.
+//This function adds a a place in a particular category.
 const addPlace = async (req, res) => {
-  const reqBody = req.body
-  const userId = '666aa6d350469c291aad9e00'
-  // console.log(`Request body == > ${JSON.stringify(reqBody)}`)
-  // console.log(`User ID == > ${JSON.stringify(userId)}`)
+  const {
+    placeName,
+    placePoster,
+    placePrice,
+    placeDescription,
+    placeType,
+    placeLocation
+  } = req.body
+  const userId = req.params.userId
 
   try {
-    const place = new Place(reqBody)
+    //Create the new place.
+    const place = new Place({
+      placeName,
+      placePoster,
+      placePrice,
+      placeDescription,
+      placeType,
+      placeLocation
+    })
     const createdPlace = await place.save()
-    // console.log(createdPlace._id)
+
+    //Assign the new place to the owner.
     const user = await User.findById(userId)
-    // console.log(`the creaetd user => ${user}`)
+    if (!user) {
+      return res.status(404).send({ error: 'User not found' })
+    }
     user.place.push(createdPlace._id)
     await user.save()
+
+    //Assign the place to the right caetgory.
+    const category = await Category.findOne({ categoryName: placeType })
+    if (!category) {
+      return res.status(404).send({ error: 'Category not found' })
+    }
+    category.place.push(createdPlace._id)
+    await category.save()
 
     res.status(201).send(createdPlace)
   } catch (e) {
     console.error(e)
+    res.status(500).send({ error: 'Internal Server Error' })
   }
 }
 
+//This function is responsible for updating the information of a particular place.
 const updatePlace = async (req, res) => {
   try {
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, {
@@ -110,11 +136,10 @@ const updatePlace = async (req, res) => {
   }
 }
 
+//This function is responsible for delete a place
 const deletePlace = async (req, res) => {
   const placeId = req.params.placeId
-  console.log(`The place ID ==> ${placeId}`)
-
-  const userId = '666aa6d350469c291aad9e00'
+  const userId = req.params.userId
 
   try {
     const place = await Place.findById(placeId)
