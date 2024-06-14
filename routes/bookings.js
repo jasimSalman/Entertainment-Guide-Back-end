@@ -9,7 +9,7 @@ router.get(
   middleware.verifyToekn,
   bookingsCtrl.index
 )
-// router.get("/", bookingsCtrl.index)
+
 router.post(
   '/:placeId/create/:userId',
   middleware.stripToken,

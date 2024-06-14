@@ -2,6 +2,7 @@ const Booking = require('../models/booking')
 const Place = require('../models/place')
 const User = require('../models/user')
 
+//This function will show all the bookings of a user.
 const index = async (req, res) => {
   try {
     const userId = req.params.userId
@@ -47,10 +48,10 @@ const create = async (req, res) => {
     console.error(err)
     res.status(500).send({ error: 'Internal Server Error' })
   }
+  //http://localhost:3001/book/:placeId/create/:userId
 }
 
-// Example route: http://localhost:3001/book/:placeId/create/:userId
-
+//This function will show all the bookings for the owner.
 const ownerBooking = async (req, res) => {
   try {
     const ownerId = req.params.userId
@@ -69,9 +70,8 @@ const ownerBooking = async (req, res) => {
     console.error(err)
     res.status(500).send({ error: 'Internal Server Error' })
   }
+  //http://localhost:3001/book/userId
 }
-
-//http://localhost:3001/book/userId
 
 module.exports = {
   create,

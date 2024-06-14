@@ -2,6 +2,7 @@ const Place = require('../models/place')
 const Category = require('../models/category')
 const Review = require('../models/review')
 const User = require('../models/user')
+const Booking = require('../models/booking')
 
 //This function will show the details of a particular place.
 const show = async (req, res) => {
@@ -145,6 +146,33 @@ const deletePlace = async (req, res) => {
     }
 
     await user.save()
+
+    const category = await Category.findById(placeId)
+    if (!category) {
+      return res.status(404).send({ error: 'Category not found' })
+    }
+
+    const categoryPlaceIndex = category.place.indexOf(placeId)
+    if (categoryPlaceIndex > -1) {
+      category.place.splice(placeIndex, 1)
+    } else {
+      return res
+        .status(404)
+        .send({ error: 'Place not found in category places' })
+    }
+
+    const booking = await Booking.findById(placeId)
+    if (!booking) {
+      return res.status(404).send({ error: 'Booking not found' })
+    }
+    const bookingPlaceIndex = booking.place.indexOf(placeId)
+    if (bookingPlaceIndex > -1) {
+      booking.place.splice(placeIndex, 1)
+    } else {
+      return res
+        .status(404)
+        .send({ error: 'Place not found in booking places' })
+    }
 
     await Place.findByIdAndDelete(placeId)
 
