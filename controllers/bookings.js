@@ -23,8 +23,8 @@ const create = async (req, res) => {
 const index = async (req, res) => {
   try {
     // userId=req.params.userId
-    userId = "6669861eefdcb09ab5eb3e27"
-    const user = await User.findById(userId).populate("booking")
+    const userId = '666aa6d350469c291aad9e00'
+    const user = await User.findById(userId).populate('booking')
     const booking = user.booking
     res.send(booking)
   } catch (err) {
@@ -35,5 +35,5 @@ const index = async (req, res) => {
 
 module.exports = {
   create,
-  index,
+  index
 }

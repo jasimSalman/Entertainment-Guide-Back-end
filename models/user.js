@@ -8,8 +8,9 @@ const UserSchema = new Schema(
     userPasswordDigest: String,
     userEmail: String,
     userType: String,
-    booking: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
-    userList: [{ type: Schema.Types.ObjectId, ref: "Place" }],
+    booking: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
+    userList: [{ type: Schema.Types.ObjectId, ref: 'Place' }],
+    place: [{ type: Schema.Types.ObjectId, ref: 'Place' }]
   },
   {
     timestamps: true
