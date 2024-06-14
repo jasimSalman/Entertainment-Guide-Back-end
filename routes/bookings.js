@@ -9,12 +9,19 @@ router.get(
   middleware.verifyToekn,
   bookingsCtrl.index
 )
-// router.get("/", bookingsCtrl.index)
+
 router.post(
-  '/:placeId/create',
+  '/:placeId/create/:userId',
   middleware.stripToken,
   middleware.verifyToekn,
   bookingsCtrl.create
+)
+
+router.get(
+  '/all/:userId',
+  middleware.stripToken,
+  middleware.verifyToekn,
+  bookingsCtrl.ownerBooking
 )
 
 module.exports = router
