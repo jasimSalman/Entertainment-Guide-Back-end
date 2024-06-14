@@ -1,9 +1,10 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
+
 const middleware = require('../middleware')
 const placesCtrl = require('../controllers/places')
-
-router.get('/', placesCtrl.index)
+// router.get("/", placesCtrl.index)
+router.get("/:placeId/reviews", placesCtrl.showReview)
 
 router.post(
   '/new',
@@ -14,8 +15,9 @@ router.post(
 
 router.get('/:placeId/reviews', placesCtrl.showReview)
 
-router.get('/:placeId', placesCtrl.show)
+// router.get("/:placeId", placesCtrl.show)
 
+router.post("/:placeId/reviews/:userId", placesCtrl.addReview)
 router.post(
   '/:placeId/reviews/:userId',
   middleware.stripToken,

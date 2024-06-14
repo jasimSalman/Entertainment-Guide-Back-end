@@ -1,18 +1,10 @@
+
 const Place = require('../models/place')
 const Category = require('../models/category')
 const Review = require('../models/review')
 const User = require('../models/user')
 
-//This function will return all the places of a certain category.
-const index = async (req, res) => {
-  // const paramId = req.params.id
-  // const categories = await Category.findById(paramId)
-  const categories = await Category.findById()
-  // const places = await Place.find({ placeType: categories.categoryName })
-  const places = await Place.find()
-  res.send(places)
-  //http://localhost:3001/places
-}
+
 
 //This function will show the details of a particular place.
 const show = async (req, res) => {
@@ -27,10 +19,8 @@ const show = async (req, res) => {
 const showReview = async (req, res) => {
   const placeId = req.params.placeId
   const places = await Place.findById(placeId)
-
   const reviews = places.review
   const review = await Review.findById(reviews)
-
   res.send(review)
 }
 
@@ -146,10 +136,7 @@ const deletePlace = async (req, res) => {
 }
 
 module.exports = {
-  index,
-  show,
-  showReview,
-  addReview,
+addReview,
   deleteReview,
   addPlace,
   updatePlace,
