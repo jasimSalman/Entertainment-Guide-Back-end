@@ -1,19 +1,27 @@
-const { User } = require('../models/user')
+const User = require('../models/user')
 const middleware = require('../middleware/index')
 
 const Register = async (req, res) => {
+  console.log(`Register request body${req.body}`)
   try {
-    const { email, password, name } = req.body
+    const { firstName, lastName, username, email, password } = req.body
 
     let passwordDigest = await middleware.hashPassword(password)
 
-    let existingUser = await User.findOne({ email })
+    let existingUser = await User.findOne({ username })
     if (existingUser) {
       return res
         .status(400)
-        .send('A user with that email has already been registered!')
+        .send('A user with that username has already been registered!')
     } else {
-      const user = await User.create({ name, email, passwordDigest })
+      const user = await User.create({
+        firstName,
+        lastName,
+        username,
+        email,
+        passwordDigest
+      })
+      console.log(firstName, lastName, username, email, password)
       res.send(user)
     }
   } catch (error) {
@@ -23,9 +31,9 @@ const Register = async (req, res) => {
 
 const Login = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { username, password } = req.body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ username })
 
     let matched = await middleware.comparePassword(
       user.passwordDigest,
@@ -35,7 +43,7 @@ const Login = async (req, res) => {
     if (matched) {
       let payload = {
         id: user.id,
-        email: user.email
+        username: user.username
       }
 
       let token = middleware.createToken(payload)
