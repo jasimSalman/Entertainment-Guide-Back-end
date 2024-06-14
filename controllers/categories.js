@@ -1,6 +1,8 @@
 const Category = require("../models/category")
 const Place = require("../models/place")
 
+
+//This function will return all the categories.
 async function index(req, res) {
   const categories = await Category.find({})
   res.json(categories)
