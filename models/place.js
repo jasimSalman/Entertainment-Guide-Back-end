@@ -7,7 +7,6 @@ const Placeschema = new Schema(
     placePoster: String,
     placePrice: Number,
     placeDescription: String,
-    placeType: String,
     placeLocation: String,
     booking: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
     review: [{ type: Schema.Types.ObjectId, ref: 'Review' }]

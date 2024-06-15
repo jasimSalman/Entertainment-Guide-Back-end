@@ -1,14 +1,13 @@
-const Place = require("../models/place")
-const Category = require("../models/category")
-const Review = require("../models/review")
-const User = require("../models/user")
+const Place = require('../models/place')
+const Category = require('../models/category')
+const Review = require('../models/review')
+const User = require('../models/user')
+const Booking = require('../models/booking')
 
 //This function will show the details of a particular place.
 const show = async (req, res) => {
   const placeId = req.params.placeId
-  // console.log(placeId)
   const places = await Place.findById(placeId)
-  // console.log(places)
   res.send(places)
   //http://localhost:3001/places/:placeId
 }
@@ -20,47 +19,50 @@ const showReview = async (req, res) => {
   const reviews = places.review
   const review = await Review.findById(reviews)
   res.send(review)
+  //http://localhost:3001/places/:placeId/reviews
 }
 
 //This function adds a review for a particular place.
 const addReview = async (req, res) => {
   const reqBody = req.body
   const placeId = req.params.placeId
-  console.log(`Request body == > ${JSON.stringify(reqBody)}`)
-  console.log(`Place ID == > ${JSON.stringify(placeId)}`)
-
   try {
     const review = new Review(reqBody)
-    const createdRe = await review.save()
-    console.log(createdRe._id)
+    const createdReview = await review.save()
 
     const place = await Place.findById(placeId)
-    place.review.push(createdRe._id)
+    place.review.push(createdReview._id)
     await place.save()
-    res.status(201).send(createdRe)
+    res.status(201).send(createdReview)
   } catch (e) {
     console.error(e)
   }
+  //http://localhost:3001/places/placeId/reviews/userId
 }
 
 //This function is responsible for deleting a review from a particular place.
 const deleteReview = async (req, res) => {
-  const reviewId = req.params.reviewId
-  console.log(`Review ID ==>${reviewId}`)
   const review = await Review.findById(reviewId)
   if (!review) {
-    return res.status(404).send("Review not found")
+    return res.status(404).send('Review not found')
   }
   const deleted = await Review.findByIdAndDelete(reviewId)
   res.status(201).send(deleted)
+  //http://localhost:3001/places/placeId/reviews/reviewId
 }
 
 //This function adds a review for a particular place.
 const addPlace = async (req, res) => {
-  const reqBody = req.body
-  const userId = "666aa6d350469c291aad9e00"
-  // console.log(`Request body == > ${JSON.stringify(reqBody)}`)
-  // console.log(`User ID == > ${JSON.stringify(userId)}`)
+  const {
+    placeName,
+    placePoster,
+    placePrice,
+    placeDescription,
+    placeType,
+    placeLocation
+  } = req.body
+  const userId = req.params.userId //The id of the owner
+
   try {
     const place = new Place(reqBody)
     const createdPlace = await place.save()
@@ -73,23 +75,25 @@ const addPlace = async (req, res) => {
   } catch (e) {
     console.error(e)
   }
+  //https://localhost:3001/places/new/userId
 }
 
 const updatePlace = async (req, res) => {
   try {
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, {
       new: true,
-      runValidators: true,
+      runValidators: true
     })
 
     if (!place) {
-      return res.status(404).send({ error: "Place not found" })
+      return res.status(404).send({ error: 'Place not found' })
     }
     res.status(200).send(place)
   } catch (e) {
     console.error(e)
-    res.status(500).send({ error: "Internal Server Error" })
+    res.status(500).send({ error: 'Internal Server Error' })
   }
+  //https://localhost:3001/places/placeId
 }
 
 const deletePlace = async (req, res) => {
@@ -101,30 +105,58 @@ const deletePlace = async (req, res) => {
   try {
     const place = await Place.findById(placeId)
     if (!place) {
-      return res.status(404).send({ error: "Place not found" })
+      return res.status(404).send({ error: 'Place not found' })
     }
 
     const user = await User.findById(userId)
     if (!user) {
-      return res.status(404).send({ error: "User not found" })
+      return res.status(404).send({ error: 'User not found' })
     }
 
     const placeIndex = user.place.indexOf(placeId)
     if (placeIndex > -1) {
       user.place.splice(placeIndex, 1)
     } else {
-      return res.status(404).send({ error: "Place not found in user places" })
+      return res.status(404).send({ error: 'Place not found in user places' })
     }
 
     await user.save()
 
+    const category = await Category.findById(placeId)
+    if (!category) {
+      return res.status(404).send({ error: 'Category not found' })
+    }
+
+    const categoryPlaceIndex = category.place.indexOf(placeId)
+    if (categoryPlaceIndex > -1) {
+      category.place.splice(placeIndex, 1)
+    } else {
+      return res
+        .status(404)
+        .send({ error: 'Place not found in category places' })
+    }
+
+    const booking = await Booking.findById(placeId)
+    if (!booking) {
+      return res.status(404).send({ error: 'Booking not found' })
+    }
+    const bookingPlaceIndex = booking.place.indexOf(placeId)
+    if (bookingPlaceIndex > -1) {
+      booking.place.splice(placeIndex, 1)
+    } else {
+      return res
+        .status(404)
+        .send({ error: 'Place not found in booking places' })
+    }
+
     await Place.findByIdAndDelete(placeId)
 
-    res.status(200).send({ message: "Place deleted successfully" })
+    res.status(200).send({ message: 'Place deleted successfully' })
   } catch (e) {
     console.error(e)
-    res.status(500).send({ error: "Internal Server Error" })
+    res.status(500).send({ error: 'Internal Server Error' })
   }
+  //https://localhost:3001/places/placeId/userId
 }
 
 module.exports = {
@@ -134,5 +166,5 @@ module.exports = {
   deleteReview,
   addPlace,
   updatePlace,
-  deletePlace,
+  deletePlace
 }
