@@ -6,9 +6,9 @@ const placesCtrl = require("../controllers/places")
 router.get("/:placeId/reviews", placesCtrl.showReview)
 
 router.post(
-  '/new/:userId',
+  "/new/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.addPlace
 ) //add place
 
@@ -20,28 +20,28 @@ router.post("/:placeId/reviews/:userId", placesCtrl.addReview)
 router.post(
   "/:placeId/reviews/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.addReview
 )
 
 router.delete(
   "/:placeId/reviews/:reviewId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.deleteReview
 )
 
 router.put(
   "/:placeId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.updatePlace
 ) //update place
 
 router.delete(
-  '/:placeId/:userId',
+  "/:placeId/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.deletePlace
 ) //delete place
 

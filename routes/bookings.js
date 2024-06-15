@@ -1,19 +1,19 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
-const middleware = require('../middleware')
-const bookingsCtrl = require('../controllers/bookings')
+const middleware = require("../middleware")
+const bookingsCtrl = require("../controllers/bookings")
 
 router.get(
-  '/:userId',
+  "/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   bookingsCtrl.index
 )
 // router.get("/", bookingsCtrl.index)
 router.post(
-  '/:placeId/create',
+  "/:placeId/create",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   bookingsCtrl.create
 )
 
