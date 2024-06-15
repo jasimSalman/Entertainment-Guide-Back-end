@@ -1,7 +1,7 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
-const middleware = require('../middleware')
-const listsCtrl = require('../controllers/lists')
+const middleware = require("../middleware")
+const listsCtrl = require("../controllers/lists")
 
 router.get(
   '/show/:userId',
@@ -20,7 +20,7 @@ router.post(
 router.delete(
   '/delete/:placeId/:userId',
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   listsCtrl.delete
 )
 

@@ -6,23 +6,24 @@ const placesCtrl = require('../controllers/places')
 router.get('/:placeId', placesCtrl.show)
 
 router.post(
-  '/new/:userId',
+  "/new/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.addPlace
 ) //add place
+
 
 router.put(
   '/:placeId',
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.updatePlace
 ) //update place
 
 router.delete(
-  '/:placeId/:userId',
+  "/:placeId/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   placesCtrl.deletePlace
 ) //delete place
 
