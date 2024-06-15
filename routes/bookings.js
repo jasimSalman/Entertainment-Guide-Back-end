@@ -11,16 +11,16 @@ router.get(
 )
 
 router.post(
-  '/:placeId/create/:userId',
+  "/:placeId/create/:userId",
   middleware.stripToken,
   middleware.verifyToken,
   bookingsCtrl.create
 )
 
 router.get(
-  '/all/:userId',
+  "/all/:userId",
   middleware.stripToken,
-  middleware.verifyToekn,
+  middleware.verifyToken,
   bookingsCtrl.ownerBooking
 )
 
