@@ -1,5 +1,5 @@
-const Category = require('../models/category')
-const Place = require('../models/place')
+const Category = require("../models/category")
+const Place = require("../models/place")
 
 //This function will return all the categories.
 const index = async (req, res) => {
@@ -11,12 +11,14 @@ const index = async (req, res) => {
 //This function will show all the places in a particular category
 const show = async (req, res) => {
   const categoryId = req.params.id
-  const places = await Category.findById(categoryId).populate('place')
-  res.send(places)
-  //http://localhost:3001/:categoryId/places/
+  const place = await Category.findById(categoryId).populate("place")
+  console.log(place)
+
+  res.send(place)
+  //http://localhost:3001/categories/:categoryId/places/
 }
 
 module.exports = {
   index,
-  show
+  show,
 }
