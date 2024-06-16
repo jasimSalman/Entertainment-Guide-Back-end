@@ -12,13 +12,15 @@ const show = async (req, res) => {
   //http://localhost:3001/places/:placeId
 }
 
-//This function will return all the reviews of a particular place.
+// //This function will return all the reviews of a particular place.
 const showReview = async (req, res) => {
-  const placeId = req.params.placeId
-  const places = await Place.findById(placeId)
-  const reviews = places.review
-  const review = await Review.findById(reviews)
-  res.send(review)
+  try {
+    const placeId = req.params.placeId
+    const place = await Place.findById(placeId).populate('review')
+    res.send(place.review)
+  } catch (error) {
+    res.status(500).send({ error: 'An error occurred while fetching reviews.' })
+  }
   //http://localhost:3001/places/:placeId/reviews
 }
 
@@ -100,7 +102,7 @@ const deletePlace = async (req, res) => {
   const placeId = req.params.placeId
   console.log(`The place ID ==> ${placeId}`)
 
-  const userId = "666aa6d350469c291aad9e00"
+  const userId = '666aa6d350469c291aad9e00'
 
   try {
     const place = await Place.findById(placeId)
