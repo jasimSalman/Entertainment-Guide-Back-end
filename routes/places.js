@@ -28,6 +28,8 @@ router.get('/:placeId/reviews', placesCtrl.showReview)
 
 router.get('/:placeId', placesCtrl.show)
 
+router.get('/all/:userId', placesCtrl.addedPlaces)
+
 router.post(
   '/:placeId/reviews/:userId',
   middleware.stripToken,

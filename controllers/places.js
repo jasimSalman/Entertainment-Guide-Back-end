@@ -161,6 +161,22 @@ const deletePlace = async (req, res) => {
   //https://localhost:3001/places/placeId/userId
 }
 
+const addedPlaces = async (req, res) => {
+  try {
+    const userId = req.params.userId
+
+    const user = await User.findById(userId).populate('place')
+    if (!user) {
+      return res.status(404).send({ error: 'User not found' })
+    }
+
+    res.status(200).send(user.place)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ error: 'Internal Server Error' })
+  }
+} //http://localhost:3001/places/all/:userId
+
 module.exports = {
   show,
   addReview,
@@ -168,5 +184,6 @@ module.exports = {
   deleteReview,
   addPlace,
   updatePlace,
-  deletePlace
+  deletePlace,
+  addedPlaces
 }
