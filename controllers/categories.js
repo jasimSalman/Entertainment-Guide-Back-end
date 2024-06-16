@@ -10,12 +10,11 @@ const index = async (req, res) => {
 
 //This function will show all the places in a particular category
 const show = async (req, res) => {
-  const categoryId = req.params.id
-  const place = await Category.findById(categoryId).populate("place")
-  console.log(place)
 
-  res.send(place)
-  //http://localhost:3001/categories/:categoryId/places/
+  const categoryId = req.params.categoryId
+  const places = await Category.findById(categoryId).populate('place')
+  res.send(places)
+  //http://localhost:3001/:categoryId/places/
 }
 
 module.exports = {
