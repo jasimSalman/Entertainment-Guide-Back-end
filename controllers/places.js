@@ -1,8 +1,8 @@
-const Place = require('../models/place')
-const Category = require('../models/category')
-const Review = require('../models/review')
-const User = require('../models/user')
-const Booking = require('../models/booking')
+const Place = require("../models/place")
+const Category = require("../models/category")
+const Review = require("../models/review")
+const User = require("../models/user")
+const Booking = require("../models/booking")
 
 //This function will show the details of a particular place.
 const show = async (req, res) => {
@@ -16,10 +16,10 @@ const show = async (req, res) => {
 const showReview = async (req, res) => {
   try {
     const placeId = req.params.placeId
-    const place = await Place.findById(placeId).populate('review')
+    const place = await Place.findById(placeId).populate("review")
     res.send(place.review)
   } catch (error) {
-    res.status(500).send({ error: 'An error occurred while fetching reviews.' })
+    res.status(500).send({ error: "An error occurred while fetching reviews." })
   }
   //http://localhost:3001/places/:placeId/reviews
 }
@@ -46,7 +46,7 @@ const addReview = async (req, res) => {
 const deleteReview = async (req, res) => {
   const review = await Review.findById(reviewId)
   if (!review) {
-    return res.status(404).send('Review not found')
+    return res.status(404).send("Review not found")
   }
   const deleted = await Review.findByIdAndDelete(reviewId)
   res.status(201).send(deleted)
@@ -55,25 +55,27 @@ const deleteReview = async (req, res) => {
 
 //This function adds a review for a particular place.
 const addPlace = async (req, res) => {
-  const {
-    placeName,
-    placePoster,
-    placePrice,
-    placeDescription,
-    placeType,
-    placeLocation
-  } = req.body
-  const userId = req.params.userId //The id of the owner
-
+  const userId = req.params.userId
   try {
-    const place = new Place(reqBody)
-    const createdPlace = await place.save()
-    // console.log(createdPlace._id)
+    const {
+      placeName,
+      placePoster,
+      placePrice,
+      placeDescription,
+      placeLocation,
+    } = req.body
+
+    const createdPlace = await Place.create(
+      placeName,
+      placePoster,
+      placePrice,
+      placeDescription,
+      placeLocation
+    )
     const user = await User.findById(userId)
-    // console.log(`the creaetd user => ${user}`)
     user.place.push(createdPlace._id)
     await user.save()
-    res.status(201).send(createdPlace)
+    res.status(200).send(createdPlace)
   } catch (e) {
     console.error(e)
   }
@@ -84,16 +86,16 @@ const updatePlace = async (req, res) => {
   try {
     const place = await Place.findByIdAndUpdate(req.params.placeId, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     })
 
     if (!place) {
-      return res.status(404).send({ error: 'Place not found' })
+      return res.status(404).send({ error: "Place not found" })
     }
     res.status(200).send(place)
   } catch (e) {
     console.error(e)
-    res.status(500).send({ error: 'Internal Server Error' })
+    res.status(500).send({ error: "Internal Server Error" })
   }
   //https://localhost:3001/places/placeId
 }
@@ -102,31 +104,31 @@ const deletePlace = async (req, res) => {
   const placeId = req.params.placeId
   console.log(`The place ID ==> ${placeId}`)
 
-  const userId = '666aa6d350469c291aad9e00'
+  const userId = "666aa6d350469c291aad9e00"
 
   try {
     const place = await Place.findById(placeId)
     if (!place) {
-      return res.status(404).send({ error: 'Place not found' })
+      return res.status(404).send({ error: "Place not found" })
     }
 
     const user = await User.findById(userId)
     if (!user) {
-      return res.status(404).send({ error: 'User not found' })
+      return res.status(404).send({ error: "User not found" })
     }
 
     const placeIndex = user.place.indexOf(placeId)
     if (placeIndex > -1) {
       user.place.splice(placeIndex, 1)
     } else {
-      return res.status(404).send({ error: 'Place not found in user places' })
+      return res.status(404).send({ error: "Place not found in user places" })
     }
 
     await user.save()
 
     const category = await Category.findById(placeId)
     if (!category) {
-      return res.status(404).send({ error: 'Category not found' })
+      return res.status(404).send({ error: "Category not found" })
     }
 
     const categoryPlaceIndex = category.place.indexOf(placeId)
@@ -135,12 +137,12 @@ const deletePlace = async (req, res) => {
     } else {
       return res
         .status(404)
-        .send({ error: 'Place not found in category places' })
+        .send({ error: "Place not found in category places" })
     }
 
     const booking = await Booking.findById(placeId)
     if (!booking) {
-      return res.status(404).send({ error: 'Booking not found' })
+      return res.status(404).send({ error: "Booking not found" })
     }
     const bookingPlaceIndex = booking.place.indexOf(placeId)
     if (bookingPlaceIndex > -1) {
@@ -148,15 +150,15 @@ const deletePlace = async (req, res) => {
     } else {
       return res
         .status(404)
-        .send({ error: 'Place not found in booking places' })
+        .send({ error: "Place not found in booking places" })
     }
 
     await Place.findByIdAndDelete(placeId)
 
-    res.status(200).send({ message: 'Place deleted successfully' })
+    res.status(200).send({ message: "Place deleted successfully" })
   } catch (e) {
     console.error(e)
-    res.status(500).send({ error: 'Internal Server Error' })
+    res.status(500).send({ error: "Internal Server Error" })
   }
   //https://localhost:3001/places/placeId/userId
 }
@@ -165,15 +167,15 @@ const addedPlaces = async (req, res) => {
   try {
     const userId = req.params.userId
 
-    const user = await User.findById(userId).populate('place')
+    const user = await User.findById(userId).populate("place")
     if (!user) {
-      return res.status(404).send({ error: 'User not found' })
+      return res.status(404).send({ error: "User not found" })
     }
 
     res.status(200).send(user.place)
   } catch (error) {
     console.error(error)
-    res.status(500).send({ error: 'Internal Server Error' })
+    res.status(500).send({ error: "Internal Server Error" })
   }
 } //http://localhost:3001/places/all/:userId
 
@@ -185,5 +187,5 @@ module.exports = {
   addPlace,
   updatePlace,
   deletePlace,
-  addedPlaces
+  addedPlaces,
 }
