@@ -6,11 +6,21 @@ const User = require('../models/user')
 const index = async (req, res) => {
   try {
     const userId = req.params.userId
-    const user = await User.findById(userId).populate('booking')
-    const booking = user.booking
-    res.send(booking)
+    const user = await User.findById(userId).populate({
+      path: 'booking',
+      populate: {
+        path: 'place',
+        model: 'Place'
+      }
+    })
+
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' })
+    }
+    res.send(user.booking)
   } catch (err) {
     console.log(err)
+    res.status(500).send({ message: 'Internal server error' })
   }
   //http://localhost:3001/book/userId
 }
@@ -61,16 +71,27 @@ const ownerBooking = async (req, res) => {
       return res.status(404).send({ error: 'Owner not found' })
     }
 
-    const bookings = await Place.find({ _id: { $in: owner.place } }).populate(
-      'booking'
-    )
+    // Find all bookings for the places the owner has
+    const placesWithBookings = await Place.find({
+      _id: { $in: owner.place }
+    }).populate({
+      path: 'booking',
+      populate: {
+        path: 'place', // Ensure place is also populated in the booking
+        model: 'Place'
+      }
+    })
 
+    // Extract all bookings from the places
+    const bookings = placesWithBookings.reduce((acc, place) => {
+      return acc.concat(place.booking)
+    }, [])
     res.send(bookings)
   } catch (err) {
     console.error(err)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //http://localhost:3001/book/userId
+  //http://localhost:3001/book/all/userId
 }
 
 module.exports = {
