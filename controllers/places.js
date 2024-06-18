@@ -71,7 +71,8 @@ const addPlace = async (req, res) => {
       placePoster,
       placePrice,
       placeDescription,
-      placeLocation
+      placeLocation,
+      owner: userId
     })
 
     const user = await User.findById(userId)
