@@ -62,7 +62,8 @@ const addPlace = async (req, res) => {
       placePoster,
       placePrice,
       placeDescription,
-      placeLocation
+      placeLocation,
+      category
     } = req.body
 
     const createdPlace = await Place.create({
@@ -74,8 +75,12 @@ const addPlace = async (req, res) => {
     })
 
     const user = await User.findById(userId)
+    const selectedCategory = await Category.findOne({ categoryName: category })
+    selectedCategory.place.push(createdPlace._id)
     user.place.push(createdPlace._id)
+    await selectedCategory.save()
     await user.save()
+
     await createdPlace.save()
     res.status(200).send(createdPlace)
   } catch (e) {
@@ -107,61 +112,48 @@ const deletePlace = async (req, res) => {
   const userId = req.params.userId
 
   try {
-    const place = await Place.findById(placeId)
-    if (!place) {
-      return res.status(404).send({ error: 'Place not found' })
+    // Remove the place from the category
+    const category = await Category.findOne({ place: placeId })
+    if (category) {
+      const categoryPlaceIndex = category.place.indexOf(placeId)
+      if (categoryPlaceIndex > -1) {
+        category.place.splice(categoryPlaceIndex, 1)
+        await category.save()
+      }
     }
 
+    // Remove the place from the bookings
+    const booking = await Booking.findOne({ place: placeId })
+    if (booking) {
+      const bookingPlaceIndex = booking.place.indexOf(placeId)
+      if (bookingPlaceIndex > -1) {
+        booking.place.splice(bookingPlaceIndex, 1)
+        await booking.save()
+      }
+    }
+
+    // Remove the place from the user
     const user = await User.findById(userId)
-    if (!user) {
-      return res.status(404).send({ error: 'User not found' })
+    if (user) {
+      const userPlaceIndex = user.place.indexOf(placeId)
+      if (userPlaceIndex > -1) {
+        user.place.splice(userPlaceIndex, 1)
+        await user.save()
+      }
     }
 
-    const placeIndex = user.place.indexOf(placeId)
-    if (placeIndex > -1) {
-      user.place.splice(placeIndex, 1)
-    } else {
-      return res.status(404).send({ error: 'Place not found in user places' })
+    // Remove the place itself
+    const place = await Place.findById(placeId)
+    if (place) {
+      await Place.findByIdAndDelete(placeId)
     }
-
-    await user.save()
-
-    const category = await Category.findById(placeId)
-    if (!category) {
-      return res.status(404).send({ error: 'Category not found' })
-    }
-
-    const categoryPlaceIndex = category.place.indexOf(placeId)
-    if (categoryPlaceIndex > -1) {
-      category.place.splice(placeIndex, 1)
-    } else {
-      return res
-        .status(404)
-        .send({ error: 'Place not found in category places' })
-    }
-
-    const booking = await Booking.findById(placeId)
-    if (!booking) {
-      return res.status(404).send({ error: 'Booking not found' })
-    }
-    const bookingPlaceIndex = booking.place.indexOf(placeId)
-    if (bookingPlaceIndex > -1) {
-      booking.place.splice(placeIndex, 1)
-    } else {
-      return res
-        .status(404)
-        .send({ error: 'Place not found in booking places' })
-    }
-
-    await Place.findByIdAndDelete(placeId)
 
     res.status(200).send({ message: 'Place deleted successfully' })
   } catch (e) {
     console.error(e)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //http://localhost:3001/places/placeId/userId
-}
+} //http://localhost:3001/places/:placeId/:userId
 
 const addedPlaces = async (req, res) => {
   try {
