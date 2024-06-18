@@ -59,32 +59,18 @@ const Login = async (req, res) => {
 }
 
 const UpdatePassword = async (req, res) => {
-  try {
-    const { email, newPassword } = req.body
-
-    let user = await User.findOne({ email })
-
-    if (user) {
-      let passwordDigest = await middleware.hashPassword(newPassword)
-      user = await User.findByIdAndUpdate(req.params.user_id, {
-        passwordDigest,
-      })
-
-      let payload = {
-        id: user.id,
-        email: user.email,
-      }
-      return res.send({ status: "Password Updated!", user: payload })
-    }
-    res
-      .status(401)
-      .send({ status: "Error", msg: "Old Password did not match!" })
-  } catch (error) {
-    console.log(error)
-    res.status(401).send({
-      status: "Error",
-      msg: "An error has occurred updating password!",
+  const { email, newPassword } = req.body
+  let user = await User.findOne({ email })
+  if (user) {
+    let passwordDigest = await middleware.hashPassword(newPassword)
+    user = await User.findByIdAndUpdate(req.params.user_id, {
+      passwordDigest,
     })
+    let payload = {
+      id: user.id,
+      email: user.email,
+    }
+    return res.send({ status: "Password Updated!", user: payload })
   }
 }
 
