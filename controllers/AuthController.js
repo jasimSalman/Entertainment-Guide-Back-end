@@ -60,38 +60,27 @@ const Login = async (req, res) => {
 
 const UpdatePassword = async (req, res) => {
   try {
-    const { oldPassword, newPassword } = req.body
+    const { username, newPassword } = req.body
 
-    let user = await User.findById(req.params.user_id)
+    let user = await User.findOne({ username })
 
-    let matched = await middleware.comparePassword(
-      user.passwordDigest,
-      oldPassword
-    )
-
-    if (matched) {
-      let passwordDigest = await middleware.hashPassword(newPassword)
-      user = await User.findByIdAndUpdate(req.params.user_id, {
-        passwordDigest
-      })
-
-      let payload = {
-        id: user.id,
-        email: user.email
-      }
-      return res.send({ status: 'Password Updated!', user: payload })
+    if (!user) {
+      return res.status(404).send({ status: 'Error', msg: 'User not found' })
     }
-    res
-      .status(401)
-      .send({ status: 'Error', msg: 'Old Password did not match!' })
+
+    let passwordDigest = await middleware.hashPassword(newPassword)
+    user.passwordDigest = passwordDigest
+    await user.save()
+
+    res.send({ status: 'Password Updated!' })
   } catch (error) {
-    console.log(error)
-    res.status(401).send({
+    console.error(error)
+    res.status(500).send({
       status: 'Error',
-      msg: 'An error has occurred updating password!'
+      msg: 'An error has occurred updating the password!'
     })
   }
-}
+} //https://localhost:3001/auth/reset-password
 
 const CheckSession = async (req, res) => {
   const { payload } = res.locals
