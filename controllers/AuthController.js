@@ -1,5 +1,5 @@
-const User = require('../models/user')
-const middleware = require('../middleware/index')
+const User = require("../models/user")
+const middleware = require("../middleware/index")
 
 const Register = async (req, res) => {
   console.log(`Register request body: ${JSON.stringify(req.body)}`)
@@ -12,14 +12,14 @@ const Register = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .send('A user with that username has already been registered!')
+        .send("A user with that username has already been registered!")
     } else {
       const user = await User.create({
         firstName,
         lastName,
         username,
         email,
-        passwordDigest
+        passwordDigest,
       })
       console.log(`Created user: ${JSON.stringify(user)}`)
       res.send(user)
@@ -34,7 +34,7 @@ const Login = async (req, res) => {
   try {
     const { username, password } = req.body
     const user = await User.findOne({ username })
-    console.log('User passwordDigest:', user.passwordDigest)
+    console.log("User passwordDigest:", user.passwordDigest)
 
     let matched = await middleware.comparePassword(
       user.passwordDigest,
@@ -45,16 +45,16 @@ const Login = async (req, res) => {
       let payload = {
         id: user._id,
         username: user.username,
-        type: user.type
+        type: user.type,
       }
 
       let token = middleware.createToken(payload)
       return res.send({ user: payload, token })
     }
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+    res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'An error has occurred!' })
+    res.status(401).send({ status: "Error", msg: "An error has occurred!" })
   }
 }
 
@@ -79,6 +79,11 @@ const UpdatePassword = async (req, res) => {
       status: 'Error',
       msg: 'An error has occurred updating the password!'
     })
+    let payload = {
+      id: user.id,
+      email: user.email,
+    }
+    return res.send({ status: "Password Updated!", user: payload })
   }
 } //https://localhost:3001/auth/reset-password
 
@@ -93,5 +98,5 @@ module.exports = {
   Register,
   Login,
   UpdatePassword,
-  CheckSession
+  CheckSession,
 }
