@@ -10,7 +10,7 @@ const Placeschema = new Schema(
     placeLocation: String,
     booking: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
     review: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    user: { type: Schema.Types.ObjectId, ref: 'User' }
+    owner: { type: Schema.Types.ObjectId, ref: 'User' }
   },
   {
     timestamps: true
