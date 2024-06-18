@@ -100,9 +100,7 @@ const updatePlace = async (req, res) => {
 
 const deletePlace = async (req, res) => {
   const placeId = req.params.placeId
-  console.log(`The place ID ==> ${placeId}`)
-
-  const userId = '666aa6d350469c291aad9e00'
+  const userId = req.params.userId
 
   try {
     const place = await Place.findById(placeId)
@@ -158,7 +156,7 @@ const deletePlace = async (req, res) => {
     console.error(e)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //https://localhost:3001/places/placeId/userId
+  //http://localhost:3001/places/placeId/userId
 }
 
 const addedPlaces = async (req, res) => {
