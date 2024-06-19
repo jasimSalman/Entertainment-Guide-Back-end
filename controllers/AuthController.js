@@ -20,6 +20,7 @@ const Register = async (req, res) => {
         username,
         email,
         passwordDigest,
+        type
       })
       console.log(`Created user: ${JSON.stringify(user)}`)
       res.send(user)
