@@ -4,7 +4,7 @@ const middleware = require('../middleware/index')
 const Register = async (req, res) => {
   console.log(`Register request body: ${JSON.stringify(req.body)}`)
   try {
-    const { firstName, lastName, username, email, password } = req.body
+    const { firstName, lastName, username, email, password, type } = req.body
     let passwordDigest = await middleware.hashPassword(password)
     console.log(`Hashed password: ${passwordDigest}`)
 
@@ -19,7 +19,8 @@ const Register = async (req, res) => {
         lastName,
         username,
         email,
-        passwordDigest
+        passwordDigest,
+        type
       })
       console.log(`Created user: ${JSON.stringify(user)}`)
       res.send(user)
