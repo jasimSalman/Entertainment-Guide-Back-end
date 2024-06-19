@@ -185,21 +185,19 @@ const addedPlaces = async (req, res) => {
 } //http://localhost:3001/places/all/:userId
 
 const search = async (req, res) => {
-  const { PlaceName } = req.body
-  console.log("Received PlaceName:", PlaceName)
+  const { placeName } = req.body
 
   try {
     const result = await Place.find({
-      PlaceName: { $regex: new RegExp(PlaceName, "i") },
+      placeName: { $regex: new RegExp(placeName, 'i') }
     })
 
-    console.log("Search Result:", result)
     res.send(result)
   } catch (error) {
-    console.log("Error:", error.message)
+    console.log('Error:', error.message)
     res.status(500).json({ message: error.message })
   }
-}
+} //http://localhost:3001/places/search
 
 module.exports = {
   show,
@@ -210,6 +208,5 @@ module.exports = {
   updatePlace,
   deletePlace,
   addedPlaces,
-  search,
-
+  search
 }
