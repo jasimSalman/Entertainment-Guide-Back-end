@@ -80,6 +80,11 @@ const UpdatePassword = async (req, res) => {
       status: 'Error',
       msg: 'An error has occurred updating the password!'
     })
+    let payload = {
+      id: user.id,
+      email: user.email
+    }
+    return res.send({ status: 'Password Updated!', user: payload })
   }
 } //https://localhost:3001/auth/reset-password
 
