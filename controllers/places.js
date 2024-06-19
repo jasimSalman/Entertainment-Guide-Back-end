@@ -172,6 +172,23 @@ const addedPlaces = async (req, res) => {
   }
 } //http://localhost:3001/places/all/:userId
 
+const search = async (req, res) => {
+  const { PlaceName } = req.body
+  console.log("Received PlaceName:", PlaceName)
+
+  try {
+    const result = await Place.find({
+      PlaceName: { $regex: new RegExp(PlaceName, "i") },
+    })
+
+    console.log("Search Result:", result)
+    res.send(result)
+  } catch (error) {
+    console.log("Error:", error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
 module.exports = {
   show,
   addReview,
@@ -181,4 +198,5 @@ module.exports = {
   updatePlace,
   deletePlace,
   addedPlaces,
+  search,
 }
