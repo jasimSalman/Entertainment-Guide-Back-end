@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const UserSchema = new Schema(
   {
@@ -8,13 +8,19 @@ const UserSchema = new Schema(
     passwordDigest: { type: String, required: true },
     email: { type: String, required: true },
     type: String,
-    booking: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
-    userList: [{ type: Schema.Types.ObjectId, ref: "Place" }],
-    place: [{ type: Schema.Types.ObjectId, ref: "Place" }],
+    booking: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
+    userList: [{ type: Schema.Types.ObjectId, ref: 'Place' }],
+    place: [{ type: Schema.Types.ObjectId, ref: 'Place' }],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review'
+      }
+    ]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 
-module.exports = mongoose.model("User", UserSchema)
+module.exports = mongoose.model('User', UserSchema)
