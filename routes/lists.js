@@ -1,24 +1,24 @@
-const express = require("express")
+const express = require('express')
 const router = express.Router()
-const middleware = require("../middleware")
-const listsCtrl = require("../controllers/lists")
+const middleware = require('../middleware')
+const listsCtrl = require('../controllers/lists')
 
 router.get(
-  "/show/:userId",
+  '/show/:userId',
   middleware.stripToken,
   middleware.verifyToken,
   listsCtrl.index
 )
 
 router.post(
-  "/:placeId/:userId",
+  '/add/:placeId/:userId',
   middleware.stripToken,
   middleware.verifyToken,
   listsCtrl.add
 )
 
 router.delete(
-  "/delete/:placeId/:userId",
+  '/delete/:placeId/:userId',
   middleware.stripToken,
   middleware.verifyToken,
   listsCtrl.delete
