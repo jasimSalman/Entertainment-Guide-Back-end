@@ -9,7 +9,6 @@ const show = async (req, res) => {
   const placeId = req.params.placeId
   const places = await Place.findById(placeId)
   res.send(places)
-  //http://localhost:3001/places/:placeId
 }
 
 // //This function will return all the reviews of a particular place.
@@ -21,7 +20,6 @@ const showReview = async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: 'An error occurred while fetching reviews.' })
   }
-  //http://localhost:3001/places/:placeId/reviews
 }
 
 //This function adds a review for a particular place.
@@ -50,7 +48,6 @@ const addReview = async (req, res) => {
     console.error(e)
     res.status(500).send({ message: 'Internal Server Error' })
   }
-  // http://localhost:3001/places/placeId/reviews/userId
 }
 
 //This function is responsible for deleting a review from a particular place.
@@ -62,7 +59,6 @@ const deleteReview = async (req, res) => {
   }
   const deleted = await Review.findByIdAndDelete(reviewId)
   res.status(201).send(deleted)
-  //http://localhost:3001/places/placeId/reviews/reviewId
 }
 
 //This function adds a review for a particular place.
@@ -75,7 +71,10 @@ const addPlace = async (req, res) => {
       placePrice,
       placeDescription,
       placeLocation,
-      category
+      category,
+      offDays,
+      workingTimeStart,
+      workingTimeEnd
     } = req.body
 
     const createdPlace = await Place.create({
@@ -84,7 +83,12 @@ const addPlace = async (req, res) => {
       placePrice,
       placeDescription,
       placeLocation,
-      owner: userId
+      owner: userId,
+      offDays,
+      workingHours: {
+        start: workingTimeStart,
+        end: workingTimeEnd
+      }
     })
 
     const user = await User.findById(userId)
@@ -99,7 +103,6 @@ const addPlace = async (req, res) => {
   } catch (e) {
     console.error(e)
   }
-  //https://localhost:3001/places/new/userId
 }
 
 const updatePlace = async (req, res) => {
@@ -117,7 +120,6 @@ const updatePlace = async (req, res) => {
     console.error(e)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //https://localhost:3001/places/placeId
 }
 
 const deletePlace = async (req, res) => {
@@ -137,7 +139,6 @@ const deletePlace = async (req, res) => {
 
     // Remove the place from the bookings
     const booking = await Booking.findOne({ place: placeId })
-    console.log(`Place id ${placeId}`)
     if (booking) {
       await booking.deleteOne()
     }
@@ -163,7 +164,7 @@ const deletePlace = async (req, res) => {
     console.error(e)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-} //http://localhost:3001/places/:placeId/:userId
+}
 
 const addedPlaces = async (req, res) => {
   try {
@@ -179,7 +180,7 @@ const addedPlaces = async (req, res) => {
     console.error(error)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-} //http://localhost:3001/places/all/:userId
+}
 
 const search = async (req, res) => {
   const { placeName } = req.body
@@ -194,7 +195,7 @@ const search = async (req, res) => {
     console.log('Error:', error.message)
     res.status(500).json({ message: error.message })
   }
-} //http://localhost:3001/places/search
+}
 
 module.exports = {
   show,

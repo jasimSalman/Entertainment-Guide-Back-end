@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-require("dotenv").config()
+require('dotenv').config()
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 const APP_SECRET = process.env.APP_SECRET
@@ -12,11 +12,7 @@ const hashPassword = async (password) => {
 }
 
 const comparePassword = async (storedPassword, password) => {
-  // Accepts the password provided in the login request and the currently stored password
-  // Compares the two passwords for a match
   let passwordMatch = await bcrypt.compare(password, storedPassword)
-  // Returns true if the passwords match
-  // Returns false if the passwords are not a match
   return passwordMatch
 }
 
@@ -30,31 +26,29 @@ const verifyToken = (req, res, next) => {
 
   try {
     let payload = jwt.verify(token, APP_SECRET)
-
     if (payload) {
       res.locals.payload = payload
       return next()
     }
-    res.status(401).send({ status: "Error", msg: "Unauthorized" })
+    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
   } catch (e) {
     console.log(e)
-    res.status(401).send({ status: "Error", msg: "Verify Token Error!" })
+    res.status(401).send({ status: 'Error', msg: 'Verify Token Error!' })
   }
 }
 
 const stripToken = (req, res, next) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1]
-
+    const token = req.headers['authorization'].split(' ')[1]
     if (token) {
       res.locals.token = token
 
       return next()
     }
-    res.status(401).send({ status: "Error", msg: "Unauthorized!" })
+    res.status(401).send({ status: 'Error', msg: 'Unauthorized!' })
   } catch (e) {
     console.log(e)
-    res.status(401).send({ status: "Error", msg: "Strip Token Error !" })
+    res.status(401).send({ status: 'Error', msg: 'Strip Token Error !' })
   }
 }
 
@@ -63,5 +57,5 @@ module.exports = {
   verifyToken,
   createToken,
   comparePassword,
-  stripToken,
+  stripToken
 }

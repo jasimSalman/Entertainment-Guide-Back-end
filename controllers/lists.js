@@ -8,7 +8,6 @@ const index = async (req, res) => {
   const lists = user.userList
   const places = await Place.find({ _id: { $in: lists } })
   res.send(places)
-  //http://localhost:3001/list/show/userId
 }
 
 //This function is responsible for adding new places to the favorite list.
@@ -31,7 +30,6 @@ const add = async (req, res) => {
   } catch (e) {
     console.error(e)
   }
-  //http://localhost:3001/list/placeId/userId
 }
 
 //This function is responsible for removing a place from the favorite list of the user.
@@ -43,7 +41,6 @@ const deleteFromTheList = async (req, res) => {
   user.userList.splice(index, 1)
   await user.save()
   res.send(`Delete succefully`)
-  //http://localhost:3001/list/delete/placeId/userId
 }
 
 module.exports = { index, add, delete: deleteFromTheList }
