@@ -15,9 +15,21 @@ const show = async (req, res) => {
 const showReview = async (req, res) => {
   try {
     const placeId = req.params.placeId
-    const place = await Place.findById(placeId).populate('review')
+
+    const place = await Place.findById(placeId).populate({
+      path: 'review',
+      populate: {
+        path: 'user',
+        select: 'username'
+      }
+    })
+    if (!place) {
+      return res.status(404).send({ error: 'Place not found' })
+    }
+
     res.send(place.review)
   } catch (error) {
+    console.error(error)
     res.status(500).send({ error: 'An error occurred while fetching reviews.' })
   }
 }
