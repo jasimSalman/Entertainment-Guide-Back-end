@@ -137,12 +137,9 @@ const deletePlace = async (req, res) => {
 
     // Remove the place from the bookings
     const booking = await Booking.findOne({ place: placeId })
+    console.log(`Place id ${placeId}`)
     if (booking) {
-      const bookingPlaceIndex = booking.place.indexOf(placeId)
-      if (bookingPlaceIndex > -1) {
-        booking.place.splice(bookingPlaceIndex, 1)
-        await booking.save()
-      }
+      await booking.deleteOne()
     }
 
     // Remove the place from the user
