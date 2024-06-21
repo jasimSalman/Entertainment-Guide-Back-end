@@ -22,7 +22,6 @@ const index = async (req, res) => {
     console.log(err)
     res.status(500).send({ message: 'Internal server error' })
   }
-  //http://localhost:3001/book/userId
 }
 
 const allBooking = async (req, res) => {
@@ -35,7 +34,6 @@ const allBooking = async (req, res) => {
       .json({ message: 'An error occurred while fetching bookings', error })
   }
 }
-//http://localhost:3001/book/all
 
 //This function is for creating a new booking.
 const create = async (req, res) => {
@@ -75,7 +73,6 @@ const create = async (req, res) => {
     console.error(err)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //http://localhost:3001/book/:placeId/create/:userId
 }
 
 //This function will show all the bookings for the owner.
@@ -88,18 +85,16 @@ const ownerBooking = async (req, res) => {
       return res.status(404).send({ error: 'Owner not found' })
     }
 
-    // Find all bookings for the places the owner has
     const placesWithBookings = await Place.find({
       _id: { $in: owner.place }
     }).populate({
       path: 'booking',
       populate: {
-        path: 'place', // Ensure place is also populated in the booking
+        path: 'place',
         model: 'Place'
       }
     })
 
-    // Extract all bookings from the places
     const bookings = placesWithBookings.reduce((acc, place) => {
       return acc.concat(place.booking)
     }, [])
@@ -108,7 +103,6 @@ const ownerBooking = async (req, res) => {
     console.error(err)
     res.status(500).send({ error: 'Internal Server Error' })
   }
-  //http://localhost:3001/book/all/userId
 }
 
 module.exports = {

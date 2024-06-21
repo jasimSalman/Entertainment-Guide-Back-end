@@ -2,11 +2,9 @@ const User = require('../models/user')
 const middleware = require('../middleware/index')
 
 const Register = async (req, res) => {
-  console.log(`Register request body: ${JSON.stringify(req.body)}`)
   try {
     const { firstName, lastName, username, email, password, type } = req.body
     let passwordDigest = await middleware.hashPassword(password)
-    console.log(`Hashed password: ${passwordDigest}`)
 
     let existingUser = await User.findOne({ username })
     if (existingUser) {
@@ -22,7 +20,6 @@ const Register = async (req, res) => {
         passwordDigest,
         type
       })
-      console.log(`Created user: ${JSON.stringify(user)}`)
       res.send(user)
     }
   } catch (error) {
@@ -35,7 +32,6 @@ const Login = async (req, res) => {
   try {
     const { username, password } = req.body
     const user = await User.findOne({ username })
-    console.log('User passwordDigest:', user.passwordDigest)
 
     let matched = await middleware.comparePassword(
       user.passwordDigest,
@@ -86,12 +82,10 @@ const UpdatePassword = async (req, res) => {
     }
     return res.send({ status: 'Password Updated!', user: payload })
   }
-} //https://localhost:3001/auth/reset-password
+}
 
 const CheckSession = async (req, res) => {
   const { payload } = res.locals
-  // console.log(`Check sesssion response ${res.locals}`)
-  // console.log(`Check sesssion payload ${payload}`)
   res.send(payload)
 }
 
